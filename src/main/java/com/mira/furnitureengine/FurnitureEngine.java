@@ -1,20 +1,19 @@
 package com.mira.furnitureengine;
 
+import com.mira.furnitureengine.commands.CommandTabCompleter;
+import com.mira.furnitureengine.commands.CoreCommand;
+import com.mira.furnitureengine.listeners.FurnitureBreak;
+import com.mira.furnitureengine.listeners.FurniturePlace;
+import com.mira.furnitureengine.listeners.RightClick;
+import com.mira.furnitureengine.utils.UpdateChecker;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mira.furnitureengine.utils.UpdateChecker;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
-import com.mira.furnitureengine.commands.*;
-import com.mira.furnitureengine.listeners.*;
-
-import org.bukkit.ChatColor;
-
-import com.mira.furnitureengine.Metrics;
-
-@SuppressWarnings("unused")
+@SuppressWarnings ("unused")
 public final class FurnitureEngine extends JavaPlugin {
+	
 	// WorldGuard Support
 	public WorldGuardPlugin wg;
 	
@@ -23,8 +22,9 @@ public final class FurnitureEngine extends JavaPlugin {
 	public String versionOld = "";
 	public String versionNew = "";
 	
-	public void onEnable() {	
-		getLogger().info(ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + "Furniture Engine enabled!");
+	public void onEnable() {
+		getLogger().info(
+				ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " Â» " + ChatColor.GRAY + "Furniture Engine enabled!");
 		
 		loadConfig();
 		
@@ -32,50 +32,56 @@ public final class FurnitureEngine extends JavaPlugin {
 		
 		// default
 		getCommand("furnitureengine").setExecutor(new CoreCommand());
-		 getCommand("furnitureengine").setTabCompleter(new CommandTabCompleter());
-		  
-		  // Event Handlers
-		 new RightClick(this);
-		 new FurniturePlace(this);
-		 new FurnitureBreak(this);
-		 
-		 int pluginId = 13146;
-	      Metrics metrics = new Metrics(this, pluginId);
+		getCommand("furnitureengine").setTabCompleter(new CommandTabCompleter());
+		
+		// Event Handlers
+		new RightClick(this);
+		new FurniturePlace(this);
+		new FurnitureBreak(this);
+		
+		int pluginId = 13146;
+		Metrics metrics = new Metrics(this, pluginId);
 		
 		// Update Checker
-	      new UpdateChecker(this, 97134).getVersion(version -> {
-	          if (this.getDescription().getVersion().equals(version)) {
-	              // Nothing happens;
-	          } else {
-	        	  versionChecked = true;
-	        	  versionOld=this.getDescription().getVersion();
-	        	  versionNew=version;
-	        	  
-	              getLogger().info(ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + "A new version is available: " + ChatColor.RED + "["+ versionOld + "]" + ChatColor.GRAY + " -> " + ChatColor.GOLD + "[" + versionNew + "]");
-	              getLogger().info(ChatColor.AQUA + "https://www.spigotmc.org/resources/furnitureengine-1-16-1-17.97134/");
-	          }
-	      });
-
+		new UpdateChecker(this, 97134).getVersion(version -> {
+			if (this.getDescription().getVersion().equals(version)) {
+				// Nothing happens;
+			}
+			else {
+				versionChecked = true;
+				versionOld = this.getDescription().getVersion();
+				versionNew = version;
+				
+				getLogger().info(
+						ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " Â» " + ChatColor.GRAY + "A new version is available: " + ChatColor.RED + "[" + versionOld + "]" + ChatColor.GRAY + " -> " + ChatColor.GOLD + "[" + versionNew + "]");
+				getLogger().info(
+						ChatColor.AQUA + "https://www.spigotmc.org/resources/furnitureengine-1-16-1-17.97134/");
+			}
+		});
+		
 	}
 	
 	public void onDisable() {
-		 getLogger().info(ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + "Furniture Engine disabled!");
-	 }
-	  
+		getLogger().info(
+				ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " Â» " + ChatColor.GRAY + "Furniture Engine disabled!");
+	}
+	
 	public void loadConfig() {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
 	
 	private WorldGuardPlugin getWorldGuard() {
-	    Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-
-	    // WorldGuard may not be loaded
-	    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-	    	getLogger().info(ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " » " + ChatColor.RED + "WorldGuard not found. Skipping!");
-	        return null; // Maybe you want throw an exception instead
-	    }
-
-	    return (WorldGuardPlugin) plugin;
+		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+		
+		// WorldGuard may not be loaded
+		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+			getLogger().info(
+					ChatColor.GOLD + "Furniture" + ChatColor.YELLOW + "Engine" + ChatColor.DARK_GRAY + " Â» " + ChatColor.RED + "WorldGuard not found. Skipping!");
+			return null; // Maybe you want throw an exception instead
+		}
+		
+		return (WorldGuardPlugin) plugin;
 	}
+	
 }
